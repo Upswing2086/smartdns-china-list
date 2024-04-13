@@ -42,11 +42,15 @@ jobs:
           grep -Ev -e '^#' -e '^$' google.china.conf > google.china.temp
           mv google.china.temp google.china.conf
           
+      - name: Combined *.conf
+        run: |
+          cat china.conf apple.china.conf google.china.conf >> combined.china.conf
+          
       - name: Commit and push changes
         uses: fregante/setup-git-user@v2
       - run: |
           git init
           git checkout -b release
-          git add china.conf apple.china.conf google.china.conf
+          git add china.conf apple.china.conf google.china.conf combined.china.conf
           git commit -m "Merge rules"
           git push -f -u origin release
